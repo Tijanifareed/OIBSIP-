@@ -6,6 +6,7 @@ import com.internship.oasis.oasistaskone.dtos.responses.AddNewUserResponse;
 import com.internship.oasis.oasistaskone.entities.User;
 import com.internship.oasis.oasistaskone.entities.UserRole;
 import com.internship.oasis.oasistaskone.exceptions.EmailAlreadyExists;
+import com.internship.oasis.oasistaskone.exceptions.PhoneNumberAlreadyExists;
 import com.internship.oasis.oasistaskone.repositories.UserRepository;
 import com.internship.oasis.oasistaskone.services.image.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AddNewUserResponse addNewUser(AddNewUserRequest request) throws IOException {
+        validateRequest(request);
         User user = new User();
         user.setUserName(request.getUserName());
         user.setEmailAddress(request.getEmailAddress());
@@ -45,11 +47,11 @@ public class AdminServiceImpl implements AdminService {
         return response;
     }
 
-    public void validateEmail(String email){
-        List<User> users= userRepository.findAll();
-        for(User user : users){
-            if (email == user.getEmailAddress()) throw new EmailAlreadyExists("A user with this email already exists");
-        }
+    public void validateRequest(AddNewUserRequest request){
+        User user1 = userRepository.findUserByEmailAddress(request.getEmailAddress());
+        User user = userRepository.findUserByPhoneNumber(request.getPhoneNumber());
+        if(user1 != null)throw new EmailAlreadyExists("A user with this email address already exists");
+        else if(user != null) throw new PhoneNumberAlreadyExists("A user with this phone number already exists");
     }
 
     public int generateLibraryNumber(){
