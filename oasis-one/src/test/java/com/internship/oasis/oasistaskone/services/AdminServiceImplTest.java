@@ -2,31 +2,65 @@ package com.internship.oasis.oasistaskone.services;
 
 import com.internship.oasis.oasistaskone.dtos.requests.AddNewUserRequest;
 import com.internship.oasis.oasistaskone.dtos.responses.AddNewUserResponse;
+import com.internship.oasis.oasistaskone.exceptions.EmailAlreadyExists;
+import com.internship.oasis.oasistaskone.repositories.UserRepository;
 import com.internship.oasis.oasistaskone.services.admin.AdminService;
+import lombok.AllArgsConstructor;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
+
 public class AdminServiceImplTest {
+    @Autowired
+    private UserRepository userRepository;
+
+    @BeforeEach
+    public void setUp(){
+        userRepository.deleteAll();
+    }
     @Autowired
     private AdminService adminService;
 
 
     @Test
-    public void testThatAdminCanAddANewUser(){
+    public void testThatAdminCanAddANewUser() throws IOException {
         AddNewUserRequest request = new AddNewUserRequest();
         request.setUserName("Fareed Tijani");
         request.setEmailAddress("fareedtijani2810@gmail.com");
-        request.setLibraryCardNumber(2007);
         request.setPhoneNumber("09117474727");
         request.setPassword("freddie");
         request.setHomeAddress("sabo, yaba");
         AddNewUserResponse response =  adminService.addNewUser(request);
         assertThat(response.getMessage()).isEqualTo("New User Created Successfully");
     }
+
+    @Test
+    public void testThatUserLibraryNumberIsUnique() throws IOException {
+        AddNewUserRequest request = new AddNewUserRequest();
+        request.setUserName("Austine Joy");
+        request.setEmailAddress("austinejoyz@gmail.com");
+        request.setPhoneNumber("09117474727");
+        request.setHomeAddress("sabo, yaba");
+        AddNewUserResponse response = adminService.addNewUser(request);
+        AddNewUserRequest request1 = new AddNewUserRequest();
+        request1.setUserName("Austine Joy");
+        request1.setEmailAddress("austinejoyz@gmail.com");
+        request1.setPhoneNumber("09117474727");
+        request1.setHomeAddress("sabo, yaba");
+        AddNewUserResponse response1 = adminService.addNewUser(request);
+        assertThat(response1.getLibraryNumber()).isNotEqualTo(response.getLibraryNumber());
+    }
+
+
+
 
 
 

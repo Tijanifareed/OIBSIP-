@@ -3,6 +3,7 @@ package com.internship.oasis.oasistaskone.dtos.requests;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -10,11 +11,10 @@ import lombok.Setter;
 public class AddNewUserRequest {
     private String userName;
     private String emailAddress;
-    private int libraryCardNumber;
     private String phoneNumber;
     private String password;
     private String homeAddress;
-    private String profilePicture;
+    private MultipartFile profilePicture;
 
 
     public String getUserName() {
@@ -33,13 +33,6 @@ public class AddNewUserRequest {
         this.emailAddress = emailAddress;
     }
 
-    public int getLibraryCardNumber() {
-        return libraryCardNumber;
-    }
-
-    public void setLibraryCardNumber(int libraryCardNumber) {
-        this.libraryCardNumber = libraryCardNumber;
-    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -65,11 +58,11 @@ public class AddNewUserRequest {
         this.homeAddress = homeAddress;
     }
 
-    public String getProfilePicture() {
+    public MultipartFile getProfilePicture() {
         return profilePicture;
     }
 
-    public void setProfilePicture(String profilePicture) {
+    public void setProfilePicture(MultipartFile profilePicture) {
         this.profilePicture = profilePicture;
     }
 }
