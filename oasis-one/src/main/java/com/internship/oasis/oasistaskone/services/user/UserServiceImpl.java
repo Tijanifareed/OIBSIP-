@@ -76,6 +76,8 @@ public class UserServiceImpl implements UserService{
         loan.setBorrowDate(LocalDate.now());
         loan.setDueDate(LocalDate.now().plusWeeks(3));
         loan.setBookStatus("Borrowed");
+        book.get().setAvaliableCopies(book.get().getAvaliableCopies() - 1);
+        bookRepository.save(book.get());
         Loans l =  loanRepository.save(loan);
         BorrowBookResponse response = new BorrowBookResponse();
         response.setLoanId(l.getLoanId());
@@ -87,8 +89,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public ReturnBookResponse returnBook(ReturnBookRequest request3) {
         Optional<Loans> loan = loanRepository.findById(request3.getLoanId());
+        Optional<Book> book = bookRepository.findById(loan.get().getBookId());
         loan.ifPresent(loans -> loans.setBookStatus("Returned"));
         loan.ifPresent(loans -> loans.setTimeReturned(LocalDateTime.now()));
+        book.get().setAvaliableCopies(book.get().getAvaliableCopies() + 1);
         ReturnBookResponse response = new ReturnBookResponse();
         response.setMessage("Book returned successfully");
         return response;

@@ -117,9 +117,6 @@ public class UserServiceImplTest {
         request3.setLoanId(response1.getLoanId());
         ReturnBookResponse returnBookResponse = userService.returnBook(request3);
         assertThat(returnBookResponse.getMessage()).isEqualTo("Book returned successfully");
-
-
-
     }
 
 
