@@ -8,7 +8,7 @@ public class DeleteUserRequest {
         return userId;
     }
 
-    public void setBookId(Long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 }

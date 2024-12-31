@@ -141,10 +141,9 @@ public class AdminServiceImplTest {
         AddNewUserResponse response =  adminService.addNewUser(request);
         User user = userRepository.findUserByLibraryCardNumber(response.getLibraryNumber());
         DeleteUserRequest request1 = new DeleteUserRequest();
-        request1.setBookId(user.getUserId());
+        request1.setUserId(user.getUserId());
         DeleteUserResponse response1 = adminService.deleteExistingUser(request1);
-        assertThat(response1).isNotNull();
-        
+        assertThat(response1.getMessage()).isEqualTo("User successfully deleted");
     }
 
 
