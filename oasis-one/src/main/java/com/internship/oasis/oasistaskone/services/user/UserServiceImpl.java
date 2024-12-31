@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -85,7 +86,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public ReturnBookResponse returnBook(ReturnBookRequest request3) {
-        return null;
+        Optional<Loans> loan = loanRepository.findById(request3.getLoanId());
+        loan.ifPresent(loans -> loans.setBookStatus("Returned"));
+        loan.ifPresent(loans -> loans.setTimeReturned(LocalDateTime.now()));
+        ReturnBookResponse response = new ReturnBookResponse();
+        response.setMessage("Book returned successfully");
+        return response;
     }
 
 

@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Loans {
@@ -17,6 +18,15 @@ public class Loans {
     private LocalDate borrowDate;
     private LocalDate dueDate;
     private String bookStatus;
+    private LocalDateTime timeReturned;
+
+    public LocalDateTime getTimeReturned() {
+        return timeReturned;
+    }
+
+    public void setTimeReturned(LocalDateTime timeReturned) {
+        this.timeReturned = timeReturned;
+    }
 
     public String getBookStatus() {
         return bookStatus;
