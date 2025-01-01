@@ -2,10 +2,7 @@ package com.internship.oasis.oasistaskone.services.admin;
 
 
 import com.internship.oasis.oasistaskone.dtos.requests.*;
-import com.internship.oasis.oasistaskone.dtos.responses.AddBookResponse;
-import com.internship.oasis.oasistaskone.dtos.responses.AddNewUserResponse;
-import com.internship.oasis.oasistaskone.dtos.responses.DeleteUserResponse;
-import com.internship.oasis.oasistaskone.dtos.responses.EditBookResponse;
+import com.internship.oasis.oasistaskone.dtos.responses.*;
 import com.internship.oasis.oasistaskone.services.DeleteBookResponse;
 
 import java.io.IOException;
@@ -19,6 +16,8 @@ public interface AdminService {
 
     DeleteUserResponse deleteExistingUser(DeleteUserRequest request1);
 
+    EditExistingBookResponse editExistingBook(EditExistingBookRequest request2);
+    EditExistingUserResponse editExistingUser(EditExistingUserRequest request2);
 
-//    EditBookResponse editExistingBookWith(EditBookRequest request1);
+
 }

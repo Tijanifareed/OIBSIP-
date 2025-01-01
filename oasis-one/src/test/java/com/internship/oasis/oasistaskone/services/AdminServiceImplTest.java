@@ -1,10 +1,7 @@
 package com.internship.oasis.oasistaskone.services;
 
 import com.internship.oasis.oasistaskone.dtos.requests.*;
-import com.internship.oasis.oasistaskone.dtos.responses.AddBookResponse;
-import com.internship.oasis.oasistaskone.dtos.responses.AddNewUserResponse;
-import com.internship.oasis.oasistaskone.dtos.responses.DeleteUserResponse;
-import com.internship.oasis.oasistaskone.dtos.responses.EditBookResponse;
+import com.internship.oasis.oasistaskone.dtos.responses.*;
 import com.internship.oasis.oasistaskone.entities.BookCategory;
 import com.internship.oasis.oasistaskone.entities.User;
 import com.internship.oasis.oasistaskone.exceptions.EmailAlreadyExists;
@@ -146,6 +143,20 @@ public class AdminServiceImplTest {
         assertThat(response1.getMessage()).isEqualTo("User successfully deleted");
     }
 
+    @Test
+    public void testThatAdminCanEditAnExistingBook(){
+        AddBookRequest request = new AddBookRequest();
+        request.setBookTitle("Beauty and the beast");
+        request.setAuthor("buhari");
+        request.setPublicationDate(LocalDate.now());
+        request.setTotalNumber(50);
+        request.setBookCategory(BookCategory.FANTASY);
+        AddBookResponse response = adminService.addNewBookWith(request);
+        EditExistingBookRequest request2 = new EditExistingBookRequest();
+        request2.setBookId(response.getBookId());
+        EditExistingBookResponse response1 = adminService.editExistingBook(request2);
+        assertThat(response1.getMessage()).isEqualTo("Book updated successfully");
+    }
 
 
 

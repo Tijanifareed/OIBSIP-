@@ -2,16 +2,14 @@ package com.internship.oasis.oasistaskone.services.admin;
 
 
 import com.internship.oasis.oasistaskone.dtos.requests.*;
-import com.internship.oasis.oasistaskone.dtos.responses.AddBookResponse;
-import com.internship.oasis.oasistaskone.dtos.responses.AddNewUserResponse;
-import com.internship.oasis.oasistaskone.dtos.responses.DeleteUserResponse;
-import com.internship.oasis.oasistaskone.dtos.responses.EditBookResponse;
+import com.internship.oasis.oasistaskone.dtos.responses.*;
 import com.internship.oasis.oasistaskone.entities.Book;
 import com.internship.oasis.oasistaskone.entities.User;
 import com.internship.oasis.oasistaskone.entities.UserRole;
 import com.internship.oasis.oasistaskone.exceptions.BookNotFoundExeption;
 import com.internship.oasis.oasistaskone.exceptions.EmailAlreadyExists;
 import com.internship.oasis.oasistaskone.exceptions.PhoneNumberAlreadyExists;
+import com.internship.oasis.oasistaskone.exceptions.UserNotFoundException;
 import com.internship.oasis.oasistaskone.repositories.BookRepository;
 import com.internship.oasis.oasistaskone.repositories.UserRepository;
 import com.internship.oasis.oasistaskone.services.DeleteBookResponse;
@@ -104,6 +102,67 @@ public class AdminServiceImpl implements AdminService {
 
         throw new BookNotFoundExeption("User not found. Check the spelling.");
 
+    }
+
+    @Override
+    public EditExistingBookResponse editExistingBook(EditExistingBookRequest request2) {
+        Optional<Book> bookOptional = bookRepository.findById(request2.getBookId());
+        if (bookOptional.isEmpty()) {
+            throw new BookNotFoundExeption("Book with ID " + request2.getBookId() + " not found");
+        }
+        Book book = bookOptional.get();
+        if (request2.getTitle() != null && !request2.getTitle().isEmpty()) {
+            book.setTitle(request2.getTitle());
+        }
+        if (request2.getAuthor() != null && !request2.getAuthor().isEmpty()) {
+            book.setAuthor(request2.getAuthor());
+        }
+        if (request2.getBookCategory() != null && !request2.getBookCategory().toString().isEmpty()) {
+            book.setBookCategory(request2.getBookCategory());
+        }
+        if (request2.getAvaliableCopies() != 0) {
+            book.setAvaliableCopies(request2.getAvaliableCopies());
+        }
+        bookRepository.save(book);
+        EditExistingBookResponse response = new EditExistingBookResponse();
+        response.setBookId(book.getBookId());
+        response.setMessage("Book updated successfully");
+        return response;
+    }
+
+    @Override
+    public EditExistingUserResponse editExistingUser(EditExistingUserRequest request) {
+        Optional<User> userOptional = userRepository.findById(request.getUserId());
+        if (userOptional.isEmpty()) {
+            throw new UserNotFoundException("User with ID " + request.getUserId() + " not found");
+        }
+        User user = userOptional.get();
+        if (request.getUserName() != null && !request.getUserName().isEmpty()) {
+            user.setUserName(request.getUserName());
+        }
+        if (request.getEmailAddress() != null && !request.getEmailAddress().isEmpty()) {
+            user.setEmailAddress(request.getEmailAddress());
+        }
+        if (request.getLibraryCardNumber() > 0) {
+            user.setLibraryCardNumber(request.getLibraryCardNumber());
+        }
+        if (request.getPhoneNumber() != null && !request.getPhoneNumber().isEmpty()) {
+            user.setPhoneNumber(request.getPhoneNumber());
+        }
+        if (request.getHomeAddress() != null && !request.getHomeAddress().isEmpty()) {
+            user.setHomeAddress(request.getHomeAddress());
+        }
+        if (request.getProfilePicture() != null && !request.getProfilePicture().isEmpty()) {
+            user.setProfilePicture(request.getProfilePicture());
+        }
+        if (request.getUserRole() != null) {
+            user.setUserRole(request.getUserRole());
+        }
+        userRepository.save(user);
+        EditExistingUserResponse response = new EditExistingUserResponse();
+        response.setUserId(user.getUserId());
+        response.setMessage("User updated successfully");
+        return response;
     }
 
 
